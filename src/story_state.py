@@ -1,6 +1,6 @@
 from typing import List, Dict, Tuple, Optional
 from datetime import datetime
-from .schemas import StoryState, CharacterState, DialogueTurn
+from .schemas import StoryState, CharacterProfile, DialogueTurn
 from .config import StoryConfig
 
 class StoryStateManager:
@@ -8,13 +8,10 @@ class StoryStateManager:
         self.config = config
         self.state = StoryState(
             seed_story=seed_story,
-            character_states={
-                char["name"]: CharacterState(
+            character_profiles={
+                char["name"]: CharacterProfile(
                     name=char["name"],
-                    emotional_state=char.get("initial_emotional_state", "Neutral"),
-                    goals=char.get("goals", []),
-                    memory=[],
-                    relationships={}
+                    description=char["description"],
                 ) for char in characters
             }
         )
@@ -31,17 +28,21 @@ class StoryStateManager:
         self.state.current_turn += 1
     
     def get_context_for_character(self, character_name: str) -> str:
-        """Return relevant context for a character within token limit."""
-        # Simple implementation: fetch last N turns
+        """Return relevant context for a character, simulating memory."""
+        # Filter history where the character was either the speaker or present (for now assume all present)
+        # In a more complex system, we'd check if they were in the scene.
+        # For simplicity, we give them the last N turns, but we could filter for relevance.
+        
+        # Taking last 15 turns to give more context since we removed explicit memory
+        recent_turns = self.state.dialogue_history[-15:]
         
         history_text = "\n".join([
             f"{turn.speaker}: {turn.dialogue}"
-            for turn in self.state.dialogue_history[-10:]  # Last 10 turns
+            for turn in recent_turns
         ])
         
         return f"""
-    Scene: {self.state.seed_story.get('scene_description', 'Unknown scene')}
-    Initial Event: {self.state.seed_story.get('initial_event', 'Unknown event')}
+    Initial Event: {self.state.seed_story.get('description', 'Unknown event')}
 
     Recent Dialogue:
     {history_text}
@@ -56,9 +57,9 @@ class StoryStateManager:
         
         return f"""
     Story Title: {self.state.seed_story.get('title', 'Untitled')}
-    Context: {self.state.seed_story.get('context', '')}
+    Description: {self.state.seed_story.get('description', '')}
 
-    Full Dialogue History:
+    Dialogue History:
     {history_text}
 
     Director Notes:
@@ -73,17 +74,3 @@ class StoryStateManager:
             return True, self.state.conclusion_reason or "Director concluded story"
         return False, ""
 
-def get_character_context(state: StoryState, character_name: str) -> str:
-    """Return relevant context for a character within token limit."""
-    history_text = "\n".join([
-        f"{turn.speaker}: {turn.dialogue}"
-        for turn in state.dialogue_history[-10:]  # Last 10 turns
-    ])
-    
-    return f"""
-Scene: {state.seed_story.get('scene_description', 'Unknown scene')}
-Initial Event: {state.seed_story.get('initial_event', 'Unknown event')}
-
-Recent Dialogue:
-{history_text}
-"""

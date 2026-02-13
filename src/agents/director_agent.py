@@ -21,7 +21,7 @@ class DirectorAgent(BaseAgent):
             recent_dialogue = "No dialogue yet. The story is just starting. Select the character most likely to speak first based on the Context."
         
         prompt = DIRECTOR_SELECT_SPEAKER_PROMPT.format(
-            story_context=story_state.seed_story.get('context', ''),
+            description=story_state.seed_story.get('description', ''),
             recent_dialogue=recent_dialogue,
             available_characters=", ".join(available_characters),
             max_consecutive=self.config.max_consecutive_same_character
@@ -29,32 +29,26 @@ class DirectorAgent(BaseAgent):
         
         # print(f"DEBUG: Director Prompt:\n{prompt}\n")
         response = await self.generate_response(prompt)
-        print(f"DEBUG: Director Raw Response:\n{response}\n")
         
         try:
-            # Clean json block if needed
-            cleaned_response = response.strip()
-            if "```json" in cleaned_response:
-                cleaned_response = cleaned_response.split("```json")[1].split("```")[0]
-            elif "```" in cleaned_response:
-                cleaned_response = cleaned_response.split("```")[1].split("```")[0]
-            
+            cleaned_response = self._clean_json_response(response)
             data = json.loads(cleaned_response)
             next_speaker = data.get("next_speaker")
+            narration = data.get("narration")
             
             if next_speaker in available_characters:
-                return next_speaker
-            return available_characters[0]
+                return next_speaker, narration
+            return available_characters[0], narration
             
         except Exception as e:
             print(f"Error parsing director selection: {e}")
             print(f"Raw response: {response}")
-            return available_characters[0]
+            return available_characters[0], ""
 
     async def check_conclusion(self, story_state: StoryState) -> Tuple[bool, Optional[str]]:
         """Check if the story should end."""
         prompt = DIRECTOR_CONCLUSION_PROMPT.format(
-            story_summary=f"Context: {story_state.seed_story.get('context', '')}\nLast Turns:\n" + "\n".join([f"{t.speaker}: {t.dialogue}" for t in story_state.dialogue_history[-5:]]),
+            story_summary=f"Context: {story_state.seed_story.get('description', '')}\nLast Turns:\n" + "\n".join([f"{t.speaker}: {t.dialogue}" for t in story_state.dialogue_history[-5:]]),
             current_turn=story_state.current_turn,
             max_turns=self.config.max_turns,
             min_turns=self.config.min_turns
@@ -63,13 +57,8 @@ class DirectorAgent(BaseAgent):
         response = await self.generate_response(prompt)
         
         try:
-            # Clean json block if needed
-            if "```json" in response:
-                response = response.split("```json")[1].split("```")[0]
-            elif "```" in response:
-                response = response.split("```")[1].split("```")[0]
-                
-            data = json.loads(response.strip())
+            cleaned_response = self._clean_json_response(response)
+            data = json.loads(cleaned_response)
             return data.get("should_end", False), data.get("conclusion_narration")
         except Exception as e:
             print(f"Error parsing director conclusion: {e}")

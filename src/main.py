@@ -48,12 +48,12 @@ async def main():
     
     print("Starting Narrative Game...")
     print(f"Title: {seed_story['title']}")
-    print(f"Scenario: {seed_story['initial_event']}\n")
+    print(f"Scenario: {seed_story['description']}\n")
     
     # Run the game with the prepared character states
     final_state = await story_graph.run(
         seed_story=seed_story, 
-        character_states=story_manager.state.character_states
+        character_profiles=story_manager.state.character_profiles
     )
     
     # Print results
@@ -69,6 +69,42 @@ async def main():
     print(f"\n=== CONCLUSION ===")
     print(f"Ended after {final_state['current_turn']} turns")
     print(f"Reason: {final_state.get('conclusion_reason')}")
+
+    # Save to JSON
+    output_path = project_root / "story_output.json"
+    output_data = {
+        "title": seed_story.get("title"),
+        "seed_story": seed_story,
+        "events": final_state.get("events", []),
+        "metadata": {
+            "total_turns": final_state["current_turn"],
+            "conclusion_reason": final_state.get("conclusion_reason")
+        }
+    }
+    
+    output_path.write_text(json.dumps(output_data, indent=2, default=str))
+    print(f"\nStory saved to {output_path}")
+
+    # Save prompts
+    all_logs = []
+    
+    # Director logs
+    for log in director.logs:
+        log["role"] = "Director"
+        all_logs.append(log)
+        
+    # Character logs
+    for char in characters:
+        for log in char.logs:
+            log["role"] = f"Character ({char.name})"
+            all_logs.append(log)
+            
+    # Sort by timestamp
+    all_logs.sort(key=lambda x: x["timestamp"])
+    
+    prompts_path = project_root / "prompts_log.json"
+    prompts_path.write_text(json.dumps(all_logs, indent=2, default=str))
+    print(f"Prompts saved to {prompts_path}")
 
 if __name__ == "__main__":
     asyncio.run(main())

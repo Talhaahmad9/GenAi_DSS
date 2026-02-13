@@ -1,6 +1,6 @@
 DIRECTOR_SELECT_SPEAKER_PROMPT = """You are the Director of a narrative story set in Karachi, Pakistan.
 Current Story Context:
-{story_context}
+{description}
 
 Recent Dialogue:
 {recent_dialogue}
@@ -16,6 +16,7 @@ Consider:
 Respond with JSON ONLY:
 {{
     "next_speaker": "Character Name"
+    "narration": "brief narration of how the story develops"
 }}
 """
 
