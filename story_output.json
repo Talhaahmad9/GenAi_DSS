@@ -1,98 +1,383 @@
 {
-  "title": "The Rickshaw Accident",
+  "metadata": {
+    "title": "The Rickshaw Accident",
+    "dialogue_turns": 18,
+    "actions_triggered": 7,
+    "total_events": 25,
+    "hidden_truth": "not_revealed",
+    "target_turns": 22
+  },
   "seed_story": {
     "title": "The Rickshaw Accident",
     "description": "Late afternoon on Shahrah-e-Faisal near Karachi Airport. Rush hour traffic. Hot and humid. A rickshaw and a car have collided, both drivers blaming each other. Horns honking, crowd gathering. Traffic police known to ask for bribe. Everyone wants this over fast but for different reasons."
   },
   "events": [
     {
-      "type": "narration",
-      "content": "Saleem, the rickshaw driver, is the most likely to break the silence. He's directly involved in the accident and likely feeling the most immediate pressure from the gathering crowd and the approaching police. He yells, attempting to establish his version of events before anyone else can.",
-      "turn": 0
+      "type": "turning_point",
+      "turn": 1,
+      "event_id": "dashcam_revealed",
+      "content": "Uncle Jameel holds up his phone \u2014 shaky footage of the exact moment of impact, shot from his shop doorway.",
+      "effect": "Footage shows Ahmed's car drifting into Saleem's lane. Fault is now visible."
+    },
+    {
+      "type": "director_note",
+      "turn": 1,
+      "content": "Uncle Jameel holds up his phone \u2014 shaky footage of the exact moment of impact, shot from his shop doorway."
     },
     {
       "type": "dialogue",
-      "speaker": "Saleem",
-      "content": "\"Arre yaar! Dekho toh, dekho! Yeh banda, *yeh banda* full speed mein aaya! Main toh slow hi jaa raha tha, Allah ki kasam! Five logon ka pet pala hai mera, bhai! Iski gaadi dekho, kuch hua bhi hai? Meri rickshaw dekho! Sab kuch kharab! Police aayegi toh woh sirf hum gareebon se paise lenge, jaane do! Kya karein, yaar, kya karein?\"",
-      "turn": 1
-    },
-    {
-      "type": "narration",
-      "content": "Ahmed Malik, the car driver, bristles at Saleem\u2019s accusation and the implication he\u2019s wealthy enough not to worry about a dent. He steps out of his car, adjusting his expensive shalwar kameez, and surveys the damage with a dismissive air. He\u2019s clearly annoyed by the delay and the gathering crowd, and wants to project an image of control.",
-      "turn": 1
-    },
-    {
-      "type": "dialogue",
+      "turn": 1,
       "speaker": "Ahmed Malik",
-      "content": "\u201cFive people\u2019s stomachs? Is that my concern? Look at the state of *my* vehicle! This is a brand new Mercedes, you understand? A dent like that\u2026 the resale value! And frankly, your rickshaw looks perfectly serviceable. Honestly, the dramatics. Just\u2026 move it. I have a flight to catch. An *international* flight. This is costing me money, and now potentially damaging my business dealings. Police will come, fine. Let them do their job. But I haven\u2019t got all day for this nonsense.\u201d",
-      "turn": 2
+      "content": "Sir, that footage is likely obtained illegally, and I insist you hand your phone over to Constable Raza immediately. We need to ensure all evidence presented is acquired through proper channels.",
+      "agentic_reasoning": {
+        "thought": "I'm already late for my flight, and this situation is escalating. Uncle Jameel is showing footage from his phone, likely of the accident. I know the dashcam footage proves I was at fault, but I need to control the narrative. I'll claim the footage he has was illegally obtained and demand he hand it over to Constable Raza. This might distract from my culpability and potentially discredit any evidence against me.",
+        "action_decision": "Point emphatically at Uncle Jameel's phone."
+      },
+      "speaker_goal": "Demand Uncle Jameel hand over the phone to Constable Raza, claiming it's illegally obtained footage."
     },
     {
-      "type": "narration",
-      "content": "The escalating argument draws the attention of Constable Raza, a weary-looking traffic policeman who slowly weaves his way through the gathering crowd, already calculating potential earnings. He surveys the scene with a practiced eye, taking in the damaged vehicles and the agitated drivers. A small, cynical smile plays on his lips \u2013 another opportunity has presented itself.",
-      "turn": 2
+      "type": "director_note",
+      "turn": 2,
+      "content": "Constable Raza\u2019s eyes flick between Ahmed Malik\u2019s expensive watch and the growing crowd, calculating the potential profit in this escalating situation."
     },
     {
       "type": "dialogue",
+      "turn": 2,
       "speaker": "Constable Raza",
-      "content": "\"Acha, acha, shant ho jao, shant ho jao. Sab log chup karo thora. Dekho, saab, Mercedes hai toh hai\u2026 aur rickshaw bhi chal rahi hai, bas thodi jhuki hui hai. Five logon ka pet pala hai\u2026haan, haan, sun raha hoon. Sabke pet pale hue hain is shehar mein. \n\nChalo, paperwork hoga, dekhte hain kya hua. *Thora* chai-pani ka kharcha bhi to banta hai, scene dekhte hue. Saab, aapka international flight hai? Dekhte hain, dekhte hain\u2026jaldi karne ki koshish karte hain.\"",
-      "turn": 3
+      "content": "Sir, let's not waste time. Please provide your vehicle registration and insurance documents. A little cooperation can make things move much smoother, you understand?",
+      "agentic_reasoning": {
+        "thought": "Right, another mess. Both these drivers are yelling, and I'm stuck in this heat. Malik has a nice car, probably has some money. Best to get this sorted quickly. I'll ask for his documents, then 'suggest' a way to make this all disappear faster. I'm not going to bother with the details of the accident right now, just paperwork.",
+        "action_decision": "Gesture towards Ahmed Malik with my hand, palm up."
+      },
+      "speaker_goal": "Demand Ahmed Malik show him his vehicle registration and insurance documents, hinting at a quick resolution for a 'small fee'."
     },
     {
-      "type": "narration",
-      "content": "Saleem, sensing the constable's thinly veiled request for a bribe and desperate to avoid further delay, attempts to appeal to Raza's empathy, hoping to avoid a financial hit. He knows arguing with Malik is pointless; his only leverage is playing on the common ground of hardship with the police officer.",
-      "turn": 3
+      "type": "action",
+      "action_number": 1,
+      "turn": 2,
+      "character": "Constable Raza",
+      "action": "pulls out citation book flipping through pages slowly",
+      "effect": "[RESOLUTION] Constable Raza: pulls out citation book flipping through pages slowly",
+      "narrative_phase": "resolution"
+    },
+    {
+      "type": "director_note",
+      "turn": 3,
+      "content": "The heat shimmers off the asphalt as Ahmed\u2019s insistence on \u2018proper channels\u2019 feels like a deliberate stalling tactic, and Saleem\u2019s desperation to get moving before missing something important boils over."
     },
     {
       "type": "dialogue",
+      "turn": 3,
       "speaker": "Saleem",
-      "content": "\"Chai-pani? Bhai, kya bolte ho aap? Meri rickshaw dekho! Jhuki hui hai? Sab kuch garam ho gaya hai, yaar! Five logon ka pet\u2026woh toh main bol raha hoon! Aapko pata bhi hai kitna mushkil hai is shehar mein? International flight\u2026theek hai, theek hai. Lekin meri zindagi bhi to hai! Constable saab, thoda toh sochiye. Kuch toh rahim karein. Main gareeb aadmi hoon, bhai. Isse zyada kya kar sakta hoon?\"",
-      "turn": 4
+      "content": "Arre bhai, look at him, this Malik saab! He was going so fast, jaan bujh kar lagaya! He's got a flight to catch, you see? He wanted to make it look like *my* fault so he wouldn't be late, Constable Raza saab.",
+      "agentic_reasoning": {
+        "thought": "Constable Raza is pulling out the citation book, meaning he's leaning towards giving me a ticket. This is bad, very bad. I need to shift the blame *hard* onto Ahmed Malik. He was speeding, I'm sure of it, and he did it on purpose to make himself late for his flight. I need to make Raza think Ahmed is trying to pull something. I'll accuse him of deliberately causing the accident to delay getting to the airport.",
+        "action_decision": "Wring hands nervously"
+      },
+      "speaker_goal": "Accuse Ahmed Malik of deliberately causing the accident to delay getting to the airport."
     },
     {
-      "type": "narration",
-      "content": "A voice cuts through the escalating argument. Uncle Jameel, a tea vendor who has been silently observing the scene with a practiced eye, steps forward, balancing a tray of chai glasses. He\u2019s a fixture on Shahrah-e-Faisal, a witness to countless such incidents. He doesn't offer tea immediately, but a weary observation that shifts the focus from the immediate blame game to the larger reality of Karachi life.",
-      "turn": 4
-    },
-    {
-      "type": "dialogue",
-      "speaker": "Uncle Jameel",
-      "content": "\"Aray,aray,aray! Kya nautanki hai yeh? Mercedes wali flight catch karne ki tension mein hai, aur rickshaw wala apne pet ki. Sab ke dukh sunai dete hain, beta. *Main* toh yahan roz dekhta hoon. \n\nDekho, Saab, international flight important hai, par yeh bhi yaad rakho, Karachi mein *sab* important hai. Constable Saab bhi thoda chai-pani ke liye hint kar rahe hain, kya karein? System hai, system! \n\nAur aap, rickshaw wale bhai, roo-dhao mat karo. Five logon ka pet pala hai toh thoda adjust karna seekho. *Mujhe* bhi pata hai mushkil hai, lekin zindagi hi aisee hai. Allah khair kare, sab theek ho jayega\u2026shayed. *Mera ek dost police mein hai, sun lo.*\"",
-      "turn": 5
-    },
-    {
-      "type": "narration",
-      "content": "Ahmed Malik, visibly frustrated by the escalating situation and the casual acceptance of corruption, decides to attempt a different tactic. He\u2019s losing patience and the mention of a police contact by Uncle Jameel seems to solidify his belief that this will be a long, drawn-out, and expensive ordeal. He attempts to bypass the system, appealing directly to Jameel, hoping to leverage his connection.",
-      "turn": 5
+      "type": "director_note",
+      "turn": 4,
+      "content": "The heat shimmers off the asphalt as Constable Raza\u2019s gaze flicks between Ahmed Malik\u2019s expensive watch and Saleem\u2019s increasingly frantic gestures, calculating the potential profit in this escalating dispute."
     },
     {
       "type": "dialogue",
-      "speaker": "Ahmed Malik",
-      "content": "\u201cA *dost* in the police? Wonderful. Just wonderful. This is precisely what I feared. Uncle Jameel, with all due respect, I do not have time for \u2018adjust karna\u2019 and \u2018Allah khair kare\u2019. My flight is boarding soon! \n\nConstable, forget the \u2018chai-pani\u2019. Forget the paperwork. I will pay for the damage \u2013 a reasonable amount, for the rickshaw, not a ransom \u2013 *if* we can move this along. But this charade\u2026 this is unacceptable. I need to be at the airport. Now. Is there a way to expedite this, or must I escalate this myself?\u201d",
-      "turn": 6
-    },
-    {
-      "type": "narration",
-      "content": "Constable Raza, sensing a potential for a larger payout and a quicker resolution (and avoiding further scrutiny), perks up at Ahmed Malik\u2019s offer. He subtly glances around to ensure no senior officers are within earshot. The crowd is thickening, and the pressure to resolve the situation \u2013 and line his own pockets \u2013 is mounting. He needs to play this carefully, appearing to mediate while maximizing his benefit.",
-      "turn": 6
-    },
-    {
-      "type": "dialogue",
+      "turn": 4,
       "speaker": "Constable Raza",
-      "content": "\"Dekhiye, Saab. Aapki jaldi hai, samajh gaya. Aur Uncle Jameel ne bhi sahi kaha, system hai. Paperwork mein waqt barayega, aur phir\u2026kharcha bhi to hoga. \n\nAcha, suniye. Rickshaw wale bhai ko thoda compensation de dijiyega, theek hai? Bas itna hi. Mein dekhta hoon ke woh satisfied hain, aur aapko bhi airport jaane deta hoon. \n\nFive hazaar. Bas. Five hazaar de dijiyega, aur chaliye. Koi tension nahi. Sab khairiyat se.\"",
-      "turn": 7
+      "content": "This will take some time to document properly, sir. A small 'expense' to facilitate the process\u2026 say, five thousand rupees\u2026 would certainly speed things along.",
+      "agentic_reasoning": {
+        "thought": "Right, both these fellows are in a hurry. Ahmed's car is damaged, Saleem's rickshaw too. This paperwork is a headache, and honestly, a little something to 'cover expenses' would make it disappear much faster. I'll hint at it without being too obvious, see if either one bites. I'll focus on Ahmed first, he looks like he has the means.",
+        "action_decision": "Slightly gesture towards the damaged car with a nod."
+      },
+      "speaker_goal": "Suggest a 'quick settlement' involving a payment directly to him, framing it as 'expenses' for the paperwork."
     },
     {
-      "type": "narration",
-      "content": "Ahmed, with a sigh that carried the weight of Karachi itself, pulled out his wallet. Five thousand rupees exchanged hands, a small fortune to Saleem, a pittance to Ahmed, and a perfectly acceptable bribe to Constable Raza. The rickshaw was hastily righted, traffic began to inch forward, and Ahmed, glancing at his watch, sprinted towards the airport terminal. Uncle Jameel watched him go, a knowing smile playing on his lips. 'Allah khair kare,' he murmured, already anticipating the next drama to unfold on Shahrah-e-Faisal. The heat shimmered, the horns blared, and life in Karachi continued, a chaotic symphony of survival and compromise.",
+      "type": "action",
+      "action_number": 2,
+      "turn": 4,
+      "character": "Saleem",
+      "action": "opens rickshaw hood revealing engine damage from collision",
+      "effect": "[RESOLUTION] Saleem: opens rickshaw hood revealing engine damage from collision",
+      "narrative_phase": "resolution"
+    },
+    {
+      "type": "director_note",
+      "turn": 5,
+      "content": "The heat shimmers off the asphalt as Ahmed\u2019s gaze flickers between Constable Raza\u2019s expectant face and Saleem\u2019s accusing glare, a bead of sweat tracing a path down his temple."
+    },
+    {
+      "type": "dialogue",
+      "turn": 5,
+      "speaker": "Ahmed Malik",
+      "content": "I observe the damage to your vehicle, sir. Constable Raza, to expedite this unfortunate matter and avoid any further delay \u2013 my flight is boarding shortly \u2013 I am prepared to offer ten thousand rupees. Perhaps this will allow us to resolve things amicably and prevent any\u2026 unnecessary complications.",
+      "agentic_reasoning": {
+        "thought": "Saleem is now dramatically displaying the damage to his rickshaw, attempting to garner sympathy and inflate his demands. I need to resolve this quickly to catch my flight, and I suspect he's trying to exploit the situation. I'll offer a substantial sum to Constable Raza, framing it as a way to expedite things and subtly suggesting Saleem is attempting an extortion. I need to appear reasonable while pushing for a swift resolution.",
+        "action_decision": "Adjust tie, looking at Raza with a slight frown."
+      },
+      "speaker_goal": "Offer Constable Raza ten thousand rupees to 'expedite' the process, while subtly implying Saleem is attempting to extort him."
+    },
+    {
+      "type": "director_note",
+      "turn": 6,
+      "content": "A wave of heat rises from the asphalt as Saleem\u2019s hand instinctively flies to his own pocket, confirming his worst fear amidst the escalating tension."
+    },
+    {
+      "type": "dialogue",
+      "turn": 6,
+      "speaker": "Saleem",
+      "content": "Arre yaar! My wallet! It's gone! He was so busy shouting about his fancy car, he must have pickpocketed me, this Malik saab! Constable Raza saab, check him!",
+      "agentic_reasoning": {
+        "thought": "This Malik saab is trying to make me the bad guy, and now my wallet is gone! He must have taken it while we were arguing about the accident. I need to accuse him of stealing it to distract from the damage to the rickshaw and his car. Constable Raza might not believe me, but it's worth a try. I need to act panicked and quickly check my person to 'discover' it's missing.",
+        "action_decision": "frantically pat pockets"
+      },
+      "speaker_goal": "Accuse Ahmed Malik of stealing his wallet while creating a distraction from the accident."
+    },
+    {
+      "type": "action",
+      "action_number": 3,
+      "turn": 6,
+      "character": "Ahmed Malik",
+      "action": "checks watch repeatedly muttering about flight time",
+      "effect": "[RESOLUTION] Ahmed Malik: checks watch repeatedly muttering about flight time",
+      "narrative_phase": "resolution"
+    },
+    {
+      "type": "director_note",
       "turn": 7,
-      "metadata": {
-        "conclusion": true
-      }
+      "content": "Constable Raza\u2019s eyes gleam with opportunity as the accusation of theft hangs in the humid air, a chance to extract even more from this escalating chaos."
+    },
+    {
+      "type": "dialogue",
+      "turn": 7,
+      "speaker": "Constable Raza",
+      "content": "I see you're concerned about your flight, sir. As part of the standard investigation following an accident and a reported missing wallet, I'll need to conduct a quick search of your vehicle.",
+      "agentic_reasoning": {
+        "thought": "He's getting anxious about his flight. Good. Pressure him. I need to appear thorough, but also hint that this can all be resolved quickly if he cooperates. Standard procedure is to search the vehicle when there's a dispute and a potential missing item \u2013 the wallet. I'll frame it as looking for the wallet, even though I suspect Saleem took it. It's about control and a possible 'facilitation fee'.",
+        "action_decision": "Slightly gesture towards the car with my hand."
+      },
+      "speaker_goal": "Demand Ahmed Malik submit to a search for the wallet, framing it as standard procedure."
+    },
+    {
+      "type": "director_note",
+      "turn": 8,
+      "content": "A bead of sweat trickles down Ahmed Malik\u2019s temple as he realizes the constable\u2019s \u2018quick search\u2019 is escalating into a full-blown rummage through his belongings, the crowd\u2019s murmurs growing louder with each item tossed aside."
+    },
+    {
+      "type": "dialogue",
+      "turn": 8,
+      "speaker": "Ahmed Malik",
+      "content": "Constable, with all due respect, I find this level of scrutiny rather excessive considering the circumstances. My flight is due to depart within the hour, and I fail to see how further delaying matters serves any productive purpose.",
+      "agentic_reasoning": {
+        "thought": "This is becoming absurd. Constable Raza is taking an inordinate amount of time with this\u2026 investigation. My flight is scheduled to depart imminently, and every moment wasted here is a significant financial loss. I need to subtly convey my displeasure and remind him of the importance of my time, while also questioning the necessity of such a detailed search given the clear circumstances \u2013 I was clearly at fault, as the dashcam footage demonstrates. I will also subtly imply he is wasting time on a minor matter when he should be focusing on more pressing issues.",
+        "action_decision": "check_watch_repeatedly_mutter"
+      },
+      "speaker_goal": "Protest the thoroughness of the search and emphasize the urgency of his flight, subtly implying Constable Raza is overstepping."
+    },
+    {
+      "type": "action",
+      "action_number": 4,
+      "turn": 8,
+      "character": "Uncle Jameel",
+      "action": "steps between arguing parties waving hands dramatically",
+      "effect": "[RESOLUTION] Uncle Jameel: steps between arguing parties waving hands dramatically",
+      "narrative_phase": "resolution"
+    },
+    {
+      "type": "director_note",
+      "turn": 9,
+      "content": "The heat shimmers off the asphalt as Constable Raza\u2019s gaze lingers on Ahmed Malik\u2019s increasingly agitated face, a familiar calculation crossing his own."
+    },
+    {
+      "type": "dialogue",
+      "turn": 9,
+      "speaker": "Constable Raza",
+      "content": "Look, Uncle Jameel, let's be realistic. All this back and forth\u2026 it's going to take hours to sort out properly. Ten thousand rupees, sir, and we can consider everything settled \u2013 the report, the wallet inquiry\u2026 and you can be on your way.",
+      "agentic_reasoning": {
+        "thought": "Uncle Jameel is trying to play peacemaker, typical. This is all just a headache. Ahmed is clearly worried about his flight, and I can exploit that. I'll suggest a larger sum to cover everything \u2013 the accident report, the 'investigation' into the missing wallet, and to ensure a swift resolution. It's a lot of paperwork otherwise, and he'll miss his flight. I'll imply a thorough search will take even longer.",
+        "action_decision": "Sigh and rub my forehead."
+      },
+      "speaker_goal": "Suggest a 'faster' resolution involving a larger sum of money, subtly implying a way to avoid a thorough search and delay Ahmed's flight."
+    },
+    {
+      "type": "director_note",
+      "turn": 10,
+      "content": "A bead of sweat trickles down Ahmed Malik\u2019s temple as he glances at his watch, the growing crowd a suffocating presence."
+    },
+    {
+      "type": "dialogue",
+      "turn": 10,
+      "speaker": "Ahmed Malik",
+      "content": "Constable, I find your suggestion insulting. My priority is the recovery of the stolen wallet \u2013 a far more serious matter than a dented fender. I expect you to dedicate your resources to finding it immediately, rather than pursuing these\u2026 extraneous arrangements.",
+      "agentic_reasoning": {
+        "thought": "This is preposterous. Constable Raza is clearly attempting to profit from this minor incident while ignoring the fact that Saleem's wallet was stolen. I need to firmly refuse any further 'amicable solutions' and redirect his attention to the actual crime. I suspect Saleem is involved, and this whole situation is a distraction. I need to appear indignant and focused on the wallet to maintain control.",
+        "action_decision": "Check watch repeatedly, mutter under breath"
+      },
+      "speaker_goal": "Refuse to pay the bribe and demand Constable Raza focus on finding the stolen wallet."
+    },
+    {
+      "type": "action",
+      "action_number": 5,
+      "turn": 10,
+      "character": "Saleem",
+      "action": "shows Ahmed the worn brake pedal explaining mechanical issues",
+      "effect": "[RESOLUTION] Saleem: shows Ahmed the worn brake pedal explaining mechanical issues",
+      "narrative_phase": "resolution"
+    },
+    {
+      "type": "director_note",
+      "turn": 11,
+      "content": "The humid air hangs thick with frustration as Saleem, eyes narrowed, sizes up Ahmed\u2019s carefully controlled composure, a flicker of suspicion crossing his face."
+    },
+    {
+      "type": "dialogue",
+      "turn": 11,
+      "speaker": "Saleem",
+      "content": "Haan, haan, dekho toh brake pedal! But that doesn't change the fact he swerved right in front of me, bhai! What's in the briefcase, Malik saab? Show us, what are you hiding?",
+      "agentic_reasoning": {
+        "thought": "He's showing off his broken brake pedal now, trying to make me look bad. But that doesn't explain how he cut me off! He deliberately blocked my view, I tell you! And what's in that briefcase he's clutching so tightly? It's probably full of money he's trying to hide from taxes, or something even worse. I need to make him nervous and get him to reveal what's inside.",
+        "action_decision": "Point accusingly at Ahmed's briefcase."
+      },
+      "speaker_goal": "Accuse Ahmed of intentionally blocking his view and demand to know what's in the briefcase."
+    },
+    {
+      "type": "director_note",
+      "turn": 12,
+      "content": "The crowd, sensing a potential payout or escalating conflict, presses closer, their murmurs adding to the oppressive heat and the insistent blare of horns."
+    },
+    {
+      "type": "dialogue",
+      "turn": 12,
+      "speaker": "Constable Raza",
+      "content": "Sir, with all due respect, your flight is scheduled soon, isn't it? A little something to expedite the paperwork and the vehicle release\u2026 say, eight thousand rupees\u2026 would save you a lot of stress.",
+      "agentic_reasoning": {
+        "thought": "Right, they're both digging in their heels. This is going nowhere fast, and my shift is ending soon. I need to remind Malik about his flight and subtly suggest a way to make this all disappear quickly. Focusing on the inconvenience for *him* is the key. He seems the type to pay to avoid trouble.",
+        "action_decision": "Sigh and glance at my watch."
+      },
+      "speaker_goal": "Attempt to redirect the conversation back to the bribe, framing it as a solution for everyone's inconvenience."
+    },
+    {
+      "type": "director_note",
+      "turn": 13,
+      "content": "Ahmed\u2019s face flushes crimson, the repeated accusations and the constable\u2019s thinly veiled extortion pushing him to the edge of composure."
+    },
+    {
+      "type": "dialogue",
+      "turn": 13,
+      "speaker": "Ahmed Malik",
+      "content": "Constable, I must insist. While I am prepared to address the matter of the vehicular damage, the immediate priority is the theft of my wallet. I expect you to fulfill your duty and thoroughly search Saleem\u2019s rickshaw for it without further delay.",
+      "agentic_reasoning": {
+        "thought": "I'm already late for my flight and this situation is escalating. The constable is focusing on the car damage instead of the theft of my wallet. I need to redirect his attention immediately and remind him of his duty to investigate a crime. I will emphasize the seriousness of the theft and demand a search of Saleem's rickshaw.",
+        "action_decision": "action_checks_watch_repeatedly_mutter"
+      },
+      "speaker_goal": "Demand Constable Raza immediately search Saleem\u2019s rickshaw for his wallet, referencing the police\u2019s duty to investigate theft."
+    },
+    {
+      "type": "action",
+      "action_number": 6,
+      "turn": 13,
+      "character": "Constable Raza",
+      "action": "ostentatiously writes in notebook while watching Saleem",
+      "effect": "[RESOLUTION] Constable Raza: ostentatiously writes in notebook while watching Saleem",
+      "narrative_phase": "resolution"
+    },
+    {
+      "type": "director_note",
+      "turn": 14,
+      "content": "A bead of sweat trickles down Saleem\u2019s temple as he sizes up Ahmed Malik, a flicker of desperation crossing his face as the crowd\u2019s murmurs grow louder."
+    },
+    {
+      "type": "dialogue",
+      "turn": 14,
+      "speaker": "Saleem",
+      "content": "Arre, Constable Raza saab, you're writing everything down, good, good! But don't be fooled, bhai! This Malik saab, he *planned* this accident, I tell you! He wants us looking at the cars while he hides something in that briefcase \u2013 open it, Raza saab, let's see what he's concealing!",
+      "agentic_reasoning": {
+        "thought": "Constable Raza is writing everything down, looking at *me* like I'm the criminal! This Malik saab is trying to play innocent, but I know he's the one who caused this and stole my wallet. I need to push Raza to focus on Malik and his briefcase \u2013 that's where the money is, I just know it. I'll accuse him of staging the whole thing to distract from the theft.",
+        "action_decision": "Point emphatically at Ahmed Malik's briefcase."
+      },
+      "speaker_goal": "Accuse Ahmed Malik of staging the accident to distract from the stolen wallet and demand he open his briefcase."
+    },
+    {
+      "type": "director_note",
+      "turn": 15,
+      "content": "The humid air hangs thick with impatience as the crowd presses closer, sensing a quick resolution \u2013 or a profitable escalation \u2013 is near."
+    },
+    {
+      "type": "dialogue",
+      "turn": 15,
+      "speaker": "Constable Raza",
+      "content": "Sir, this wallet theft complicates things. A full investigation, statements, forensics\u2026 it could easily take all night. Fifteen thousand rupees, and we can expedite the report and release your vehicle, ensuring you don't miss your flight.",
+      "agentic_reasoning": {
+        "thought": "Ahmed Malik is clearly worried about his flight. He's a smooth talker, but I can smell desperation. I'll play on that. I'll suggest a 'processing fee' to speed things up, framing it as avoiding a lengthy investigation into the stolen wallet. I'll start with a higher number, expecting him to negotiate down. I'll also subtly imply the investigation could delay his flight even further.",
+        "action_decision": "action_ostentatiously_writes_in_noteb"
+      },
+      "speaker_goal": "Demand Ahmed Malik pay the bribe to avoid a lengthy investigation into the wallet theft."
+    },
+    {
+      "type": "director_note",
+      "turn": 16,
+      "content": "A ripple of murmurs passes through the crowd as Saleem\u2019s accusation hangs in the air, and Constable Raza\u2019s eyes flick between Ahmed\u2019s increasingly agitated face and the briefcase at his feet."
+    },
+    {
+      "type": "dialogue",
+      "turn": 16,
+      "speaker": "Uncle Jameel",
+      "content": "Arey bhai! Don't play innocent with me. Saleem sahib told me he saw you hiding something in that briefcase \u2013 open it *now*, before I call my friend Constable Raza and we all have more trouble, okay?",
+      "agentic_reasoning": {
+        "thought": "Okay, okay. This Ahmed Malik, very smooth talker. But Saleem told me, *very* confidentially, that Ahmed has the wallet hidden in his briefcase. He said he saw something. Saleem is a good man, mostly. I need to push Ahmed now, make him open that briefcase. Mention Saleem's name, put some pressure. I also know 'someone in police', so a little threat won't hurt.",
+        "action_decision": "Point emphatically at Ahmed's briefcase."
+      },
+      "speaker_goal": "Demand Ahmed open his briefcase immediately, citing Saleem's claim of hidden evidence."
+    },
+    {
+      "type": "action",
+      "action_number": 7,
+      "turn": 16,
+      "character": "Constable Raza",
+      "action": "signals other officers to redirect traffic",
+      "effect": "[RESOLUTION] Constable Raza: signals other officers to redirect traffic",
+      "narrative_phase": "resolution"
+    },
+    {
+      "type": "director_note",
+      "turn": 17,
+      "content": "A bead of sweat trickles down Ahmed Malik\u2019s temple as the crowd\u2019s scrutiny intensifies, the setting sun casting long, accusing shadows across the damaged vehicles."
+    },
+    {
+      "type": "dialogue",
+      "turn": 17,
+      "speaker": "Ahmed Malik",
+      "content": "I observe your efforts to manage the traffic flow, Constable, but I must reiterate that my time is exceedingly valuable. I will not be subjected to a search of my briefcase \u2013 it contains highly confidential business documents. Focus your attention on locating the stolen wallet, and a proper investigation into how it disappeared from Mr. Saleem\u2019s possession.",
+      "agentic_reasoning": {
+        "thought": "Raza is attempting to control the situation by redirecting traffic, likely to create space for\u2026 whatever he\u2019s planning. I need to shut down any further attempts to involve me in this ridiculous fender-bender. I will refuse to cooperate with any search of my belongings, emphasizing the importance of finding Saleem\u2019s wallet and the sensitivity of my business dealings. I need to appear important and above this mess. The dashcam footage is a problem, but I can downplay it.",
+        "action_decision": "checks watch repeatedly, muttering under breath"
+      },
+      "speaker_goal": "Refuse to open the briefcase, claiming it contains sensitive business documents and demanding a proper police investigation into the wallet theft instead."
+    },
+    {
+      "type": "director_note",
+      "turn": 18,
+      "content": "The humid air hangs thick with suspicion as Constable Raza\u2019s gaze flickers between Ahmed Malik\u2019s rigid posture and the growing impatience of the crowd, sensing a quick resolution slipping away."
+    },
+    {
+      "type": "dialogue",
+      "turn": 18,
+      "speaker": "Constable Raza",
+      "content": "Sir, before we proceed further, I need to see your flight booking confirmation. Just to verify the urgency of your appointment and ensure we prioritize accordingly.",
+      "agentic_reasoning": {
+        "thought": "This Ahmed Malik is playing the 'important appointment' card. I need to verify that, and quickly. A valid flight booking is easy enough to check, and if he's lying, that adds leverage. I'll act like I'm being thorough, but really I'm just fishing for a way to increase the 'facilitation fee'.",
+        "action_decision": "action_ostentatiously_writes_in_noteb"
+      },
+      "speaker_goal": "Demand Ahmed Malik produce his flight booking confirmation to verify his claims of a valuable appointment."
+    },
+    {
+      "type": "conclusion",
+      "turn": 18,
+      "content": "As Ahmed reached for his business card, Saleem's worn wallet tumbled from the briefcase onto the asphalt. The crowd went silent, then erupted. Constable Raza had no choice but to detain Ahmed for questioning. Saleem recovered his fifty thousand rupees, every note accounted for. Ahmed's flight departed without him, and his explanation to the airline\u2014and later, his company\u2014rang hollow. The footage of the wallet falling went viral by morning. The dashcam video was clear and undeniable, time-stamped and geotagged."
     }
   ],
-  "metadata": {
-    "total_turns": 7,
-    "conclusion_reason": "Ahmed, with a sigh that carried the weight of Karachi itself, pulled out his wallet. Five thousand rupees exchanged hands, a small fortune to Saleem, a pittance to Ahmed, and a perfectly acceptable bribe to Constable Raza. The rickshaw was hastily righted, traffic began to inch forward, and Ahmed, glancing at his watch, sprinted towards the airport terminal. Uncle Jameel watched him go, a knowing smile playing on his lips. 'Allah khair kare,' he murmured, already anticipating the next drama to unfold on Shahrah-e-Faisal. The heat shimmered, the horns blared, and life in Karachi continued, a chaotic symphony of survival and compromise."
+  "conclusion": {
+    "reason": "Natural resolution at turn 18",
+    "final_narration": "As Ahmed reached for his business card, Saleem's worn wallet tumbled from the briefcase onto the asphalt. The crowd went silent, then erupted. Constable Raza had no choice but to detain Ahmed for questioning. Saleem recovered his fifty thousand rupees, every note accounted for. Ahmed's flight departed without him, and his explanation to the airline\u2014and later, his company\u2014rang hollow. The footage of the wallet falling went viral by morning. The dashcam video was clear and undeniable, time-stamped and geotagged."
   }
 }
