@@ -458,7 +458,7 @@ cat prompts_log.json | jq .
 
 **🌙 Midnight Sons 🌙**
 
-Moiz Ali Siddiqui* • Syed Ayaan Nadeem • Talha Ahmed
+Moiz Ali Siddiqui* • Syed Ayaan Nadeem • Talha Ahmad
 
 *Institute of Business Administration (IBA), Karachi*
 
