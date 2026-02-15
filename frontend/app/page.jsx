@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import WorldSidebar from '@/components/WorldSidebar';
 import EventFeed from '@/components/EventFeed';
 import ControlPanel from '@/components/ControlPanel';
@@ -9,13 +9,13 @@ export default function Home() {
   const [worldState, setWorldState] = useState({ items: {} });
   const [status, setStatus] = useState("Idle");
   
-  // The Gatekeeper: Persists across re-renders to block duplicates
-  const seenEvents = useRef(new Set());
+  // THE GATEKEEPER: Persistent storage for unique event fingerprints
+  const processedKeys = useRef(new Set());
 
   const startSimulation = () => {
     setEvents([]);
     setWorldState({ items: {} });
-    seenEvents.current.clear(); // Clear the gatekeeper for new run
+    processedKeys.current.clear(); 
     setStatus("Running...");
     
     const eventSource = new EventSource("http://localhost:8000/stream-story");
@@ -27,16 +27,16 @@ export default function Home() {
         setStatus("Complete");
         eventSource.close();
       } else {
-        // Create a Unique Fingerprint
-        // We use turn + type + first 20 chars of content to identify the event
-        const contentSnippet = (data.content || data.action || "").substring(0, 20);
-        const eventId = `${data.turn}-${data.type}-${contentSnippet}`;
+        // Fingerprint: Turn + Type + first 30 chars of content
+        const contentSnippet = (data.content || data.action || "").substring(0, 30);
+        const fingerprint = `${data.turn}-${data.type}-${contentSnippet}`;
 
-        if (!seenEvents.current.has(eventId)) {
-          seenEvents.current.add(eventId);
+        if (!processedKeys.current.has(fingerprint)) {
+          processedKeys.current.add(fingerprint);
           
           setEvents((prev) => [...prev, data]);
 
+          // Update sidebar with Entity Registry snapshots
           if (data.entity_updates) {
             setWorldState({ items: data.entity_updates.items });
           }
@@ -53,7 +53,7 @@ export default function Home() {
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden text-gray-900">
       <WorldSidebar items={worldState.items} />
-      <main className="flex-1 flex flex-col h-full">
+      <main className="flex-1 flex flex-col h-full overflow-hidden">
         <ControlPanel status={status} onStart={startSimulation} />
         <EventFeed events={events} />
       </main>

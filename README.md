@@ -19,17 +19,24 @@
 ### Prerequisites
 
 ```bash
+# Backend
 Python 3.11+
 UV package manager
 Google Gemini API key
+
+# Frontend
+Node.js 18+
+NPM or Yarn
 ```
 
 ### Installation & Setup
 
+#### Backend
 ```bash
 # 1. Clone repository
+# (if not already done)
 git clone https://github.com/your-repo/GenAi_DSS.git
-cd GenAi_DSS
+cd GenAi_DSS/backend
 
 # 2. Install dependencies
 uv sync
@@ -37,12 +44,28 @@ uv sync
 # 3. Configure API key
 echo "GOOGLE_API_KEY=your_gemini_api_key_here" > .env
 
-# 4. Run simulation
+# 4. Run simulation (for CLI output)
 uv run src/main.py
+
+# 5. (Required for frontend) Start backend server
+python server.py
 ```
 
 **⏱️ Execution time:** 3-5 minutes  
 **📊 Output:** `story_output.json` + `prompts_log.json`
+
+#### Frontend
+```bash
+cd ../frontend
+npm install
+# Make sure the backend server is running (python server.py in backend)!
+npm run dev
+# or
+# yarn install && yarn dev
+```
+
+- Access the UI at [http://localhost:3000](http://localhost:3000)
+- The frontend will visualize and control the simulation (see below for details)
 
 ### Verification
 
@@ -56,7 +79,75 @@ cat prompts_log.json | jq .
 
 ---
 
+## 📁 Project Structure
+
+```
+GenAi_DSS/
+├── backend/
+│   ├── examples/                  # Story seeds & character configs
+│   ├── src/                      # Core simulation engine
+│   │   ├── agents/               # Agent logic
+│   │   ├── graph/                # Narrative state machine
+│   │   ├── prompts/              # Prompt templates
+│   │   ├── config.py             # LLM & system config
+│   │   ├── schemas.py            # Pydantic models
+│   │   ├── story_state.py        # State & registry
+│   │   └── main.py               # Entry point
+│   ├── story_output.json         # Generated narrative
+│   ├── prompts_log.json          # LLM logs
+│   └── ...
+├── frontend/
+│   ├── app/                      # Next.js app entry
+│   ├── components/               # UI components
+│   ├── public/                   # Static assets
+│   ├── package.json              # Frontend dependencies
+│   └── ...
+└── README.md
+```
+
+---
+
+## 🖥️ Frontend Usage
+
+The frontend (Next.js/React) provides a live UI for simulation control and visualization.
+
+**Note:** The backend server (`python server.py` in `backend/`) must be running before starting the frontend.
+
+### Features
+- Control simulation (start, stop, step)
+- View event feed and agent actions
+- Inspect world state and character memory
+
+### Running the Frontend
+```bash
+cd frontend
+npm install
+# Make sure the backend server is running (python server.py in backend)!
+npm run dev
+```
+Visit [http://localhost:3000](http://localhost:3000)
+
+---
+
+## ⚙️ Environment Variables
+
+- `GOOGLE_API_KEY` (backend): Your Gemini API key, set in `backend/.env`
+- (Optional) Add other environment variables as needed for frontend/backend integration
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repo and create a feature branch
+2. For backend: add/modify agents, prompts, or story logic in `backend/src/`
+3. For frontend: add UI features in `frontend/components/`
+4. Submit a pull request with clear description
+
+---
+
 ## 🐛 Troubleshooting
+
+### Backend
 
 ### API Key Error
 ```bash
@@ -76,342 +167,32 @@ Edit `src/story_state.py`:
 self.total_turns = random.randint(18, 22)  # Adjust range
 ```
 
----
+### Frontend
+```bash
+# If you see errors on npm install
+npm cache clean --force
+rm -rf node_modules package-lock.json
+npm install
 
-## 📖 Overview
-
-A production-grade **Multi-Agent Narrative System** where AI agents don't just talk—they **act, remember, and reason strategically**.
-
-### ✨ What Makes This Different?
-
-Traditional chatbots only generate dialogue. Our system creates **coherent, action-driven stories** where:
-
-- 🎬 **Physical Actions** — Characters search, call, point, gesture (7+ per story)
-- 🧠 **Chain-of-Thought** — Visible internal reasoning before every turn
-- 💾 **Structured Memory** — Trust/suspicion scores evolve dynamically
-- 📋 **Entity Tracking** — Prevents contradictions ("whose wallet is this?")
-- 🔍 **Mystery System** — Hidden truth revealed through progressive clues
-
-### 🎯 Sample Output
-
-> *A 19-turn story about a rickshaw accident in Karachi where characters argue, perform actions (searching papers, making phone calls), and eventually reveal who stole the wallet.*
-
----
-
-## 📁 Project Structure
-
+# If port 3000 is in use
+npx kill-port 3000
 ```
-GenAi_DSS/
-├── 📂 examples/
-│   └── rickshaw_accident/
-│       ├── character_configs.json    # 4 character profiles
-│       └── seed_story.json           # Story seed (mandatory)
-│
-├── 📂 src/
-│   ├── 📂 agents/
-│   │   ├── base_agent.py            # Abstract agent class
-│   │   ├── character_agent.py       # CoT reasoning agent
-│   │   └── director_agent.py        # Orchestrator agent
-│   │
-│   ├── 📂 graph/
-│   │   └── narrative_graph.py       # LangGraph state machine
-│   │
-│   ├── 📂 prompts/
-│   │   ├── character_prompts.py     # Character templates
-│   │   └── director_prompts.py      # Director templates
-│   │
-│   ├── config.py                    # Configuration
-│   ├── schemas.py                   # Pydantic models
-│   ├── story_state.py               # State + entity registry
-│   └── main.py                      # Entry point
-│
-├── 📄 story_output.json             # Generated narrative
-├── 📄 prompts_log.json              # LLM interaction logs
-└── 📄 README.md
-```
-
----
-
-## 🎯 System Architecture
-
-### 1️⃣ The Director (Orchestrator)
-
-```python
-# Controls narrative flow through deterministic plot clock
-PHASES = {
-    "ESCALATION":  (1-5),    # Establish conflict
-    "COMPLEXITY":  (6-12),   # Mystery clues, negotiations  
-    "RESOLUTION":  (13+)     # Force conclusion
-}
-```
-
-**Responsibilities:**
-- ✅ Decides when characters speak vs. perform actions
-- ✅ Selects next speaker using Gemini LLM
-- ✅ Enforces minimum 5 actions before turn 15
-- ✅ Injects turning points ("crowd starts recording")
-
----
-
-### 2️⃣ Character Agents (TAD Loop)
-
-```
-┌─────────────────────────────────────┐
-│  1. Receive Goal                    │
-│     "Accuse Ahmed of stealing"      │
-│           ↓                          │
-│  2. Think (Chain-of-Thought)        │
-│     "Ahmed is too calm..."          │
-│           ↓                          │
-│  3. Decide Action                   │
-│     "none" or "points at briefcase" │
-│           ↓                          │
-│  4. Generate Dialogue                │
-│     "Open that briefcase, Ahmed!"   │
-└─────────────────────────────────────┘
-```
-
-**Output Example:**
-```json
-{
-  "thought": "Ahmed is hiding something...",
-  "action_decision": "none",
-  "dialogue": "Open that briefcase, Ahmed sahib!"
-}
-```
-
----
-
-### 3️⃣ State Manager
-
-#### A. Entity Registry (Prevents Contradictions)
-
-```json
-{
-  "wallet": {
-    "owner": "Saleem",
-    "status": "missing",
-    "value": "50000 rupees"
-  }
-}
-```
-
-❌ **Without Registry:** *"I found a wallet... looks like Ahmed's!"*  
-✅ **With Registry:** *"I found Saleem's wallet under the seat!"*
-
-#### B. Character Memory (Evolves Over Time)
-
-```json
-{
-  "trust": {"Ahmed": 0.3, "Saleem": 0.7},
-  "suspicion": {"Raza": 0.8},
-  "emotional_state": "angry",
-  "knowledge": ["wallet_discussed", "bribe_attempted"]
-}
-```
-
----
-
-### 4️⃣ Action System
-
-**Enforcement Rules:**
-```python
-if turn < 15 and action_count < 5:
-    if consecutive_dialogue >= 2:
-        FORCE_ACTION = True
-
-if consecutive_dialogue >= 3:
-    FORCE_ACTION = True
-```
-
-**Action Handshaking:**
-```
-ACTION #3: Saleem frantically searches rickshaw
-           ↓
-Turn #4:   Ahmed MUST acknowledge this action
-           "I observe Mr. Saleem's theatrical search..."
-```
-
-**Zero Repetition:**
-- Global tracking prevents reuse
-- 24+ unique templates per character
-- Auto-reset only after full exhaustion
-
----
-
-### 5️⃣ Mystery System
-
-**Hidden Truth** (randomly selected):
-- `saleem_innocent`
-- `ahmed_stole_wallet`
-- `wallet_never_stolen`
-- `raza_corrupt`
-- `uncle_witnessed_bribe`
-
-**Progressive Clues:**
-```
-Turn 5:  Hint      → "Saleem pats pocket, goes pale"
-Turn 10: Evidence  → "Ahmed shifts briefcase suspiciously"
-Turn 15: Weapon    → "Uncle Jameel spots wallet corner"
-Turn 19: Reveal    → "Wallet tumbles from briefcase..."
-```
-
----
-
-## 📊 Output Files
-
-### 📄 story_output.json
-
-Complete narrative trace with metadata:
-
-```json
-{
-  "metadata": {
-    "title": "The Rickshaw Accident",
-    "dialogue_turns": 19,
-    "actions_triggered": 7,
-    "total_events": 26
-  },
-  "events": [
-    {
-      "type": "dialogue",
-      "turn": 1,
-      "speaker": "Ahmed Malik",
-      "content": "This is preposterous...",
-      "agentic_reasoning": {
-        "thought": "I'm going to miss my flight...",
-        "action_decision": "none"
-      }
-    },
-    {
-      "type": "action",
-      "turn": 3,
-      "character": "Saleem",
-      "action": "points to tyre marks on road"
-    },
-    {
-      "type": "conclusion",
-      "turn": 19,
-      "content": "As Ahmed reached for his card..."
-    }
-  ]
-}
-```
-
-### 📄 prompts_log.json
-
-Complete LLM interaction history:
-
-```json
-[
-  {
-    "timestamp": "2026-02-15T10:32:15.234Z",
-    "agent": "Ahmed Malik",
-    "agentic_reasoning": {
-      "thought": "This Saleem is trying to distract...",
-      "dialogue": "I observe Mr. Saleem's search..."
-    }
-  }
-]
-```
-
----
-
-## 🔧 Configuration
-
-### Change LLM Model
-
-Edit `src/config.py`:
-
-```python
-class StoryConfig:
-    model_name: str = "gemini-2.0-flash-exp"
-    temperature: float = 0.7
-    max_tokens: int = 1000
-```
-
-### Customize Characters
-
-Edit `examples/rickshaw_accident/character_configs.json`:
-
-```json
-{
-  "characters": [
-    {
-      "name": "Your Character",
-      "description": "Personality and background..."
-    }
-  ]
-}
-```
-
-### Add New Stories
-
-1. Create folder in `examples/`
-2. Add `seed_story.json` and `character_configs.json`
-3. Update `src/main.py` to point to new story
-
----
-
-## ✨ Key Features
-
-<table>
-<tr>
-<td width="50%">
-
-### 🎯 Entity-Ownership Registry
-
-**Problem:** Characters claim wrong items  
-**Solution:** Canonical registry  
-**Result:** Zero contradictions
-
-</td>
-<td width="50%">
-
-### 🧠 Chain-of-Thought
-
-**Problem:** Can't see agent reasoning  
-**Solution:** Visible `thought` field  
-**Result:** Complete transparency
-
-</td>
-</tr>
-<tr>
-<td width="50%">
-
-### 🔁 Zero-Repetition Actions
-
-**Problem:** Same actions repeat  
-**Solution:** Global tracking  
-**Result:** 7+ unique actions
-
-</td>
-<td width="50%">
-
-### ⏰ Deterministic Pacing
-
-**Problem:** Stories meander  
-**Solution:** Plot clock  
-**Result:** Guaranteed resolution
-
-</td>
-</tr>
-</table>
 
 ---
 
 ## 📚 Technical Stack
 
 ```yaml
-Language:      Python 3.11+
-LLM Provider:  Google Gemini 2.0 Flash
-Framework:     LangGraph (LangChain)
-State:         Pydantic v2
-Package Mgr:   UV
-
-API Calls:     ~45 per simulation
-Cost:          ~$0.05 per run
-Execution:     3-5 minutes
+Backend Language: Python 3.11+
+Backend LLM:     Google Gemini 2.0 Flash
+Backend Framework: LangGraph (LangChain)
+State:           Pydantic v2
+Package Mgr:     UV
+Frontend:        Next.js (React 18+)
+UI:              Tailwind CSS
+API Calls:       ~45 per simulation
+Cost:            ~$0.05 per run
+Execution:       3-5 minutes
 ```
 
 ---

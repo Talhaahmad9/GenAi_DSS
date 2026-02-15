@@ -6,7 +6,6 @@ from ..agents.character_agent import CharacterAgent
 from ..agents.director_agent import DirectorAgent
 from ..story_state import StoryStateManager
 
-
 class NarrativeGraph:
     def __init__(self, config: StoryConfig, characters: List[CharacterAgent],
                  director: DirectorAgent, story_manager: StoryStateManager):
@@ -51,8 +50,9 @@ class NarrativeGraph:
 
     async def _director_decide_node(self, state: StoryState) -> Dict:
         move_type, character, action_dict = self.director.decide_next_move()
+        # Return only the new notes to be appended
         return {
-            "director_notes": state.director_notes + [f"Decision: {move_type}"],
+            "director_notes": [f"Decision: {move_type}"],
             "next_move_type": move_type,
             "next_action": action_dict
         }
@@ -66,11 +66,9 @@ class NarrativeGraph:
         action_text = action_dict["action"]
         targets    = action_dict.get("targets", [])
 
-        # Update memory from action
+        # Update state via manager
         self.story_manager.update_memory_from_action(character, action_text, targets)
         self.story_manager.increment_action_count()
-
-        # Issue 4: Register action for context injection into next speaker
         self.story_manager.set_last_action(action_dict)
 
         self.action_counter += 1
@@ -86,45 +84,27 @@ class NarrativeGraph:
             "narrative_phase": phase["name"]
         }
 
-        print("\n" + "═" * 80)
-        print(f"🎬 ACTION #{self.action_counter}  │  Phase: {phase['name'].upper()}")
-        print("─" * 80)
-        print(f"   Character : {character}")
-        print(f"   Action    : {action_text}")
-        print("═" * 80)
-
-        return {"events": state.events + [action_event]}
+        # FIX: Return only the NEW event array
+        return {"events": [action_event]}
 
     async def _character_respond_node(self, state: StoryState) -> Dict:
         available = list(self.characters.keys())
 
-        # Director returns 5 values now
         next_speaker, narration, speaker_goal, tp_event, intervention = \
             await self.director.select_next_speaker(state, available)
 
         character = self.characters[next_speaker]
         memory_snapshot  = self.story_manager.get_memory_snapshot(next_speaker)
         context          = self.story_manager.get_context_for_character(next_speaker)
-
-        # Issue 4: Action constraint injection
         action_constraint = self.story_manager.get_action_constraint()
-        
-        # NEW: Get entity context
         entity_context = self.story_manager.get_entity_context()
-
-        # Issue 5: Check if a clue drops this turn
         clue = self.story_manager.get_clue_for_turn(state.current_turn)
 
-        # Issue 2: CoT — character returns (dialogue, thought, action_decision)
-        # NEW: Pass entity_context to character
         dialogue, thought, action_decision = await character.respond(
             state, context, memory_snapshot, speaker_goal, action_constraint, entity_context
         )
 
-        # Issue 3: Perception update from this dialogue
         self.story_manager.update_memory_from_dialogue(next_speaker, dialogue, state.current_turn)
-
-        # Record in per-character history
         self.story_manager.record_dialogue(next_speaker, dialogue)
         self.story_manager.increment_dialogue_count()
         self.dialogue_turn_counter += 1
@@ -137,7 +117,6 @@ class NarrativeGraph:
 
         events_update = []
 
-        # Hard intervention event
         if intervention:
             events_update.append({
                 "type": "hard_intervention",
@@ -147,7 +126,6 @@ class NarrativeGraph:
                 "effect": intervention["effect"]
             })
 
-        # Turning point event
         if tp_event:
             events_update.append({
                 "type": "turning_point",
@@ -157,7 +135,6 @@ class NarrativeGraph:
                 "effect": tp_event["effect"]
             })
 
-        # Issue 5: Clue event
         if clue:
             events_update.append({
                 "type": "mystery_clue",
@@ -166,7 +143,6 @@ class NarrativeGraph:
                 "content": clue[1]
             })
 
-        # Director note
         if narration:
             events_update.append({
                 "type": "director_note",
@@ -174,69 +150,24 @@ class NarrativeGraph:
                 "content": narration
             })
 
-        # Dialogue event with CoT fields
         events_update.append({
             "type": "dialogue",
             "turn": self.dialogue_turn_counter,
             "speaker": next_speaker,
             "content": dialogue,
-            "agentic_reasoning": {       # Issue 2: visible in story_output.json
+            "agentic_reasoning": {
                 "thought": thought,
                 "action_decision": action_decision
             },
             "speaker_goal": speaker_goal
         })
 
-        # ── CLI output ─────────────────────────────────────────────────────────
-        phase = self.director.get_current_phase()
-
-         # Hard intervention banner
-        if intervention:
-            print("🚨" * 40)
-            print(f"🚨 NARRATIVE INTERVENTION: {intervention['narration']}")
-            print(f"   Effect: {intervention['effect']}")
-            print("🚨" * 40)
-
-        # Turning point banner
-        if tp_event:
-            print("⚡" * 40)
-            print(f"⚡ TURNING POINT: {tp_event['narration']}")
-            print(f"   Effect: {tp_event['effect']}")
-            print("⚡" * 40)
-            
-        print("\n" + "─" * 80)
-
-        # Mystery clue banner
-        if clue:
-            print(f"🔍 MYSTERY CLUE [{clue[0].upper()}]: {clue[1]}")
-            print("─" * 80)
-
-        # print("\n")
-        # Director narration with phase + speaker
-        if narration:
-            print(f"📋 DIRECTOR [{phase['name'].upper()}]: {narration}")
-            print(f"   ➤ Next Speaker : {next_speaker}")
-            if speaker_goal:
-                print(f"   🎯 Goal        : {speaker_goal}")
-            print("─" * 80)
-
-        # Issue 2: Show thought in CLI (brief)
-        if thought:
-            print(f"   💭 [{next_speaker} thinks]: {thought[:120]}{'...' if len(thought) > 120 else ''}")
-
-        # # Action decision (minor gesture)
-        # if action_decision and action_decision.lower() not in ("none", ""):
-        #     print(f"   ✋ [{next_speaker}]: {action_decision}")
-
-        print(f"💬 Turn #{self.dialogue_turn_counter} | {next_speaker}")
-        print(f"   {dialogue}")
-        print("─" * 80)
-
+        # FIX: Return only NEW turn and event list
         return {
-            "dialogue_history": state.dialogue_history + [new_turn],
+            "dialogue_history": [new_turn],
             "current_turn":     state.current_turn + 1,
-            "events":           state.events + events_update,
-            "story_narration":  state.story_narration + ([narration] if narration else [])
+            "events":           events_update,
+            "story_narration":  ([narration] if narration else [])
         }
 
     async def _check_conclusion_node(self, state: StoryState) -> Dict:
@@ -250,33 +181,23 @@ class NarrativeGraph:
                 "turn": state.current_turn,
                 "content": conclusion_narration
             })
-            
-            # NEW: Print conclusion banner in CLI
-            print("\n" + "═" * 80)
-            print("📖 DIRECTOR [CONCLUSION]:")
-            print("─" * 80)
-            print(f"   {conclusion_narration}")
-            print("═" * 80 + "\n")
 
+        # FIX: Return only NEW conclusion event
         return {
             "is_concluded": should_end,
             "conclusion_reason": reason,
-            "story_narration": state.story_narration + ([conclusion_narration] if conclusion_narration else []),
-            "events": state.events + events_update
+            "story_narration": ([conclusion_narration] if conclusion_narration else []),
+            "events": events_update
         }
 
     async def _conclude_node(self, state: StoryState) -> Dict:
         return {"is_concluded": True}
-
-    # ── Routing ───────────────────────────────────────────────────────────────
 
     def _route_director_decision(self, state: StoryState) -> str:
         return state.next_move_type
 
     def _route_conclusion(self, state: StoryState) -> str:
         return "conclude" if state.is_concluded else "continue"
-
-    # ── Entry Point ───────────────────────────────────────────────────────────
 
     async def run(self, seed_story: Dict, character_profiles: Dict[str, Any] = None) -> StoryState:
         initial_state = {
@@ -291,6 +212,6 @@ class NarrativeGraph:
             "hidden_truth":        self.story_manager.hidden_truth,
             "next_move_type":      "dialogue",
             "next_action":         None,
-            "entity_registry":     self.story_manager.state.entity_registry  # NEW: Initialize entity registry
+            "entity_registry":     self.story_manager.state.entity_registry
         }
         return await self.graph.ainvoke(initial_state)
