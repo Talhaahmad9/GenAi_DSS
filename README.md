@@ -241,7 +241,7 @@ cat prompts_log.json | jq .
 
 Moiz Ali Siddiqui* • Syed Ayaan Nadeem • Talha Ahmad
 
-*Institute of Business Administration (IBA), Karachi*
+*Institute of Business Administration (IoBM), Karachi*
 
 **Hackfest x Datathon 2026**
 
