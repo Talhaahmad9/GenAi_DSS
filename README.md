@@ -1,127 +1,162 @@
-<div align="center">
+<div align="center">🎭 Multi-Agent Narrative Simulation Engine
 
-# 🎭 Multi-Agent Narrative Simulation Engine
+Autonomous Agents. Dynamic Actions. Persistent World State.
 
-### Autonomous agents, evolving world state, and emergent narrative generation
+   
 
-[![Python](https://img.shields.io/badge/Python-3.11%2B-00ff41?style=for-the-badge&logo=python&logoColor=black)](https://python.org)
-[![LangGraph](https://img.shields.io/badge/LangGraph-Agentic-00ff41?style=for-the-badge&logo=graphql&logoColor=black)](https://langchain-ai.github.io/langgraph/)
-[![Gemini](https://img.shields.io/badge/Google_Gemini-2.0_Flash-00ff41?style=for-the-badge&logo=google&logoColor=black)](https://ai.google.dev)
-[![Next.js](https://img.shields.io/badge/Next.js-Frontend-00ff41?style=for-the-badge&logo=nextdotjs&logoColor=black)](https://nextjs.org)
-
-**Team Midnight Sons**  
-**1st Place — IBA Hackfest × Datathon 2026**
+Team Midnight Sons
+1st Place — IBA Hackfest × Datathon 2026
 
 </div>
+---
+
+Overview
+
+The Multi-Agent Narrative Simulation Engine is an agent-based storytelling system built for IBA Hackfest × Datathon 2026.
+
+Instead of generating an entire story in a single LLM response, the system creates a persistent simulated world where autonomous agents make decisions, perform actions, interact with other characters, maintain memory, and gradually progress toward the resolution of a hidden mystery.
+
+The simulation is coordinated through LangGraph, while structured state and agent outputs are maintained using Pydantic.
+
+The project includes:
+
+Autonomous character agents
+
+A director/orchestrator agent
+
+Persistent world and character state
+
+Entity ownership tracking
+
+Structured agent actions
+
+Dynamic narrative progression
+
+Simulation and decision logs
+
+A Next.js dashboard for control and visualization
+
+
 
 ---
 
-## Overview
+Key Features
 
-This project is a multi-agent narrative simulation engine built for **IBA Hackfest × Datathon 2026**.
+Multi-Agent Orchestration
 
-The system simulates a dynamic fictional world in which autonomous characters make decisions, perform actions, interact with other agents, maintain state, and collectively progress toward the resolution of a hidden mystery.
-
-Instead of generating a story in a single LLM response, the project models the narrative as a sequence of stateful agent interactions coordinated through **LangGraph**.
-
-The system includes:
-
-- autonomous character agents
-- a director/orchestrator agent
-- persistent world and character state
-- entity ownership tracking
-- structured agent decisions
-- dynamic action generation
-- narrative progression across multiple turns
-- generated event logs
-- a frontend dashboard for simulation control and inspection
-
----
-
-## Key Features
-
-### Multi-Agent Orchestration
-
-Multiple agents operate inside the same simulated world.
+Multiple autonomous agents operate inside the same simulated world.
 
 Each agent can:
 
-- inspect the current world state
-- react to previous events
-- decide what action to take
-- interact with other characters
-- update its own memory/state
-- influence the direction of the story
+Inspect the current world state
 
-A central director agent coordinates the simulation and ensures that actions remain consistent with the evolving narrative.
+React to previous events
 
-### Persistent World State
+Use relevant character memory
 
-The simulation maintains structured state across turns instead of treating every LLM call independently.
+Select an action
 
-State includes:
+Interact with other characters
 
-- character information
-- memories
-- current narrative events
-- tracked entities
-- entity ownership
-- previous actions
-- global simulation state
+Affect tracked entities
 
-Pydantic models are used to keep the state structured and predictable.
+Influence the direction of the story
 
-### Entity Ownership Registry
 
-The engine maintains a global entity registry to prevent inconsistent ownership of important objects.
+A central director agent helps coordinate the simulation and narrative progression.
 
-For example, if a wallet belongs to one character, the state system tracks that ownership across future turns instead of allowing the object to randomly appear with another character.
+Persistent World State
 
-### Dynamic Agent Decisions
+The simulation maintains state across turns rather than treating every model request independently.
 
-Agents produce structured outputs containing information such as:
+Tracked state includes:
 
-- reasoning/state interpretation
-- selected action
-- dialogue
-- affected characters or entities
+Character information
 
-These outputs are validated before being applied to the simulation state.
+Character memory
 
-### Narrative Progression
+Previous actions
 
-The system runs for a configurable number of turns.
+Narrative events
 
-Across those turns, agents gradually reveal information, react to events, and move the story toward a final resolution.
+Entity ownership
 
-The generated result is written to:
+Global story state
 
-```text
+Simulation progress
+
+
+Pydantic models are used to validate and structure this data.
+
+Entity Ownership Registry
+
+The engine includes a global entity registry to help maintain consistency across the simulation.
+
+For example, if an important object belongs to a particular character, that ownership remains tracked across later turns rather than being recreated inconsistently by the model.
+
+Structured Agent Decisions
+
+Agent responses are processed as structured outputs rather than relying entirely on unvalidated free-form text.
+
+Each turn can contain information such as:
+
+Current interpretation of the situation
+
+Selected action
+
+Dialogue
+
+Affected entities
+
+Target characters
+
+Resulting state changes
+
+
+Dynamic Narrative Progression
+
+The simulation progresses across multiple turns.
+
+Characters gradually:
+
+Discover information
+
+React to previous events
+
+Interact with one another
+
+Change the world state
+
+Move toward a final narrative resolution
+
+
+The generated result is stored in:
+
 story_output.json
 
-Agent interaction and prompt logs are written to:
+Simulation and agent logs are stored in:
 
 prompts_log.json
 
 Interactive Frontend
 
-The project includes a Next.js frontend for inspecting and controlling the simulation.
+The project includes a Next.js frontend for controlling and inspecting the simulation.
 
-The interface allows users to:
+The interface supports:
 
-start the simulation
+Starting the simulation
 
-stop execution
+Stopping the simulation
 
-progress the simulation step-by-step
+Stepping through turns
 
-inspect agent actions
+Viewing agent actions
 
-view the event feed
+Viewing the event feed
 
-inspect world state
+Inspecting world state
 
-inspect character information and memory
+Inspecting character memory and state
 
 
 
@@ -130,8 +165,7 @@ inspect character information and memory
 Architecture
 
 ┌──────────────────────┐
-                 │     User / UI        │
-                 │      Next.js         │
+                 │      Next.js UI      │
                  └──────────┬───────────┘
                             │
                             ▼
@@ -169,36 +203,25 @@ Project Structure
 
 GenAi_DSS/
 ├── backend/
-│   ├── examples/
-│   │   └── ...                     # Story seeds and character configurations
-│   │
+│   ├── examples/                  # Story seeds and character configurations
 │   ├── src/
-│   │   ├── agents/
-│   │   │   └── ...                 # Agent and director logic
-│   │   │
-│   │   ├── graph/
-│   │   │   └── ...                 # LangGraph workflow
-│   │   │
-│   │   ├── prompts/
-│   │   │   └── ...                 # Prompt templates
-│   │   │
-│   │   ├── config.py               # LLM and application configuration
-│   │   ├── schemas.py              # Pydantic models
-│   │   ├── story_state.py          # Global simulation state
-│   │   └── main.py                 # CLI simulation entry point
-│   │
-│   ├── server.py                   # Backend API/server
-│   ├── story_output.json           # Generated narrative output
-│   ├── prompts_log.json            # Simulation and agent logs
+│   │   ├── agents/               # Character and director agent logic
+│   │   ├── graph/                # LangGraph workflow
+│   │   ├── prompts/              # Prompt templates
+│   │   ├── config.py             # LLM and application configuration
+│   │   ├── schemas.py            # Pydantic models
+│   │   ├── story_state.py        # World state and entity registry
+│   │   └── main.py               # CLI simulation entry point
+│   ├── server.py                 # Backend server for frontend communication
+│   ├── story_output.json         # Generated narrative
+│   ├── prompts_log.json          # Simulation and agent logs
 │   └── ...
-│
 ├── frontend/
-│   ├── app/
-│   ├── components/
-│   ├── public/
+│   ├── app/                      # Next.js application
+│   ├── components/               # UI components
+│   ├── public/                   # Static assets
 │   ├── package.json
 │   └── ...
-│
 ├── README.md
 └── ...
 
@@ -209,37 +232,42 @@ Tech Stack
 
 Area	Technology
 
-Language	Python 3.11+
+Backend Language	Python 3.11+
 Agent Framework	LangGraph / LangChain
 LLM	Google Gemini 2.0 Flash
-Validation / State	Pydantic v2
-Backend Package Manager	UV
+State Validation	Pydantic v2
+Package Manager	UV
 Frontend	Next.js / React
 Styling	Tailwind CSS
-Communication	Backend API
-Output	JSON
+Backend Communication	API
+Output Format	JSON
 Approx. API Calls	~45 per simulation
 Typical Runtime	~3–5 minutes
 
 
-> Runtime and API usage can vary depending on the selected story configuration and model behavior.
+> Runtime and API usage may vary depending on the simulation configuration and model behavior.
 
 
 
 
 ---
 
-Getting Started
+Quick Start
 
 Prerequisites
 
-Make sure you have:
+Make sure you have the following installed:
 
 Python 3.11+
+
 UV
+
 Node.js 18+
-npm
+
+npm or Yarn
+
 Google Gemini API key
+
 
 
 ---
@@ -268,11 +296,11 @@ Create a .env file:
 
 echo "GOOGLE_API_KEY=your_gemini_api_key_here" > .env
 
-Run the Simulation from CLI
+Run the Simulation from the CLI
 
 uv run src/main.py
 
-After execution, the system generates:
+After execution, the simulation generates:
 
 story_output.json
 prompts_log.json
@@ -288,7 +316,7 @@ python server.py
 
 Frontend Setup
 
-Open another terminal:
+Open another terminal and run:
 
 cd frontend
 npm install
@@ -298,64 +326,94 @@ Then open:
 
 http://localhost:3000
 
-Make sure the backend server is already running before using the frontend.
+Make sure the backend server is running before using the frontend.
 
 
 ---
 
 Frontend Capabilities
 
-The dashboard allows you to:
+The dashboard allows users to:
 
-start a simulation
+Start a simulation
 
-pause or stop execution
+Stop execution
 
-step through simulation turns
+Progress through the simulation step-by-step
 
-view agent actions
+View agent actions
 
-inspect the event feed
+Follow the event feed
 
-inspect world state
+Inspect world state
 
-inspect character state and memory
+Inspect character memory
 
+Monitor simulation progression
+
+
+
+---
+
+Simulation Flow
+
+A simplified simulation cycle looks like this:
+
+1. Load current world state
+2. Select the active agent
+3. Provide relevant memory and events
+4. Agent evaluates the situation
+5. Agent selects an action
+6. Validate the structured output
+7. Apply state changes
+8. Update the entity registry
+9. Director evaluates narrative progress
+10. Continue to the next turn
+
+The process continues until the configured simulation length is reached and the narrative concludes.
 
 
 ---
 
 Generated Outputs
 
-Story Output
+Narrative Output
 
 backend/story_output.json
 
-Contains the generated narrative and final sequence of story events.
+Contains the generated narrative and resulting story events.
 
-Agent / Prompt Logs
+Simulation Logs
 
 backend/prompts_log.json
 
-Contains structured logs of agent interactions and decisions during the simulation.
+Contains structured logs from the simulation, useful for:
 
-These logs are useful for debugging, evaluation, and understanding how the agents influenced the final outcome.
+Debugging
+
+Evaluating agent behavior
+
+Inspecting decisions
+
+Understanding narrative progression
+
 
 
 ---
 
-Core Files
+Key Files
 
 File	Purpose
 
 src/agents/	Character and director agent logic
-src/story_state.py	Global world and narrative state
-src/schemas.py	Pydantic models and structured outputs
-src/graph/	LangGraph workflow and simulation orchestration
-src/prompts/	Prompt definitions
-server.py	Backend API for frontend communication
-story_output.json	Final generated narrative
-prompts_log.json	Agent interaction and debugging logs
+src/graph/	LangGraph orchestration
+src/prompts/	Agent prompt definitions
+src/story_state.py	Global story state and entity registry
+src/schemas.py	Pydantic schemas and structured outputs
+src/config.py	Model and system configuration
+server.py	Backend server
+story_output.json	Final narrative output
+prompts_log.json	Simulation and debugging logs
 
 
 
@@ -363,43 +421,27 @@ prompts_log.json	Agent interaction and debugging logs
 
 Evaluation Goals
 
-The project was designed around several hackathon evaluation requirements.
+The system was designed around several hackathon evaluation requirements.
 
 Action Diversity
 
-Agents should perform a variety of meaningful actions instead of repeating the same behavior.
+Agents should perform varied and meaningful actions instead of repeatedly choosing the same behavior.
 
 Entity Consistency
 
-Tracked objects should remain consistent throughout the simulation.
+Tracked objects should maintain consistent ownership and state throughout the simulation.
 
-For example, ownership of important entities should not randomly change between turns.
+Structured Agent Output
 
-Structured Agent Decisions
+Agent decisions are processed through structured schemas instead of relying entirely on unrestricted text generation.
 
-Agent responses are processed as structured outputs rather than unvalidated free-form text.
+Persistent State
+
+Events from previous turns affect later decisions and narrative progression.
 
 Narrative Resolution
 
-The simulation should gradually progress toward a coherent conclusion that resolves the central mystery.
-
-
----
-
-Example Simulation Flow
-
-A simplified simulation cycle looks like this:
-
-1. Load current world state
-2. Select active agent
-3. Provide relevant memory and events
-4. Agent evaluates the situation
-5. Agent selects an action
-6. Output is validated
-7. World state is updated
-8. Director evaluates narrative progress
-9. Next turn begins
-10. Continue until the simulation concludes
+The simulation gradually progresses toward a coherent conclusion that resolves the central mystery.
 
 
 ---
@@ -408,7 +450,7 @@ Troubleshooting
 
 Missing Gemini API Key
 
-Ensure the file exists here:
+Ensure the following file exists:
 
 backend/.env
 
@@ -416,17 +458,11 @@ and contains:
 
 GOOGLE_API_KEY=your_actual_key
 
-
----
-
-Python Dependencies
+Python Dependency Issues
 
 Reinstall backend dependencies:
 
 uv sync
-
-
----
 
 Frontend Dependency Issues
 
@@ -437,23 +473,17 @@ If necessary:
 
 npm cache clean --force
 
-
----
-
 Port 3000 Already in Use
 
 npx kill-port 3000
 
-Then restart:
+Then restart the frontend:
 
 npm run dev
 
-
----
-
 Adjust Simulation Length
 
-The number of turns can be configured in the simulation state.
+The simulation length can be configured in the story state.
 
 Example:
 
@@ -468,23 +498,36 @@ IBA Hackfest × Datathon 2026
 
 Result: 1st Place
 
-The project was developed by Team Midnight Sons during the hackathon.
+The project was developed by Team Midnight Sons during IBA Hackfest × Datathon 2026.
 
-The challenge required us to build an agent-based narrative system capable of maintaining state, producing varied actions, tracking entities, and resolving a generated mystery.
+The challenge involved building an agent-based narrative system capable of:
 
-The project was built under hackathon time constraints and combined:
+Maintaining persistent state
 
-multi-agent orchestration
+Producing diverse actions
+
+Tracking entities consistently
+
+Coordinating multiple autonomous agents
+
+Progressing toward a generated mystery resolution
+
+
+The project combined:
+
+Multi-agent orchestration
 
 LLM-based decision making
 
-state management
+Structured state management
 
-structured outputs
+Entity tracking
 
-backend development
+Backend development
 
-frontend visualization
+Frontend visualization
+
+Real-time simulation control
 
 
 
@@ -498,10 +541,30 @@ Moiz Ali Siddiqui
 Syed Ayaan Nadeem
 Talha Ahmad
 
-Hackfest × Datathon 2026
-IBA Karachi
+IBA Hackfest × Datathon 2026
 
 </div>
+---
+
+Contributing
+
+1. Fork the repository.
+
+
+2. Create a feature branch.
+
+
+3. Make your changes.
+
+
+4. Test the backend or frontend as required.
+
+
+5. Submit a pull request with a clear description of the changes.
+
+
+
+
 ---
 
 License
